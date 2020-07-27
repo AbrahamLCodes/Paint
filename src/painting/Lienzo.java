@@ -25,6 +25,7 @@ public class Lienzo extends JPanel {
 
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
 
@@ -32,24 +33,32 @@ public class Lienzo extends JPanel {
 
         if (Formulario.getComboBox1().getItemCount() == 6) {
 
-            if (Formulario.getComboBox1().getSelectedIndex() == 0) {
-                //"Select an item"
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 1) {
-                //Draw Line
-                Line(g);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 2) {
-                // Draw Square
-                Square(g);
-
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 3) {
-                //Draw Rectangle
-                Rectangle(g);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 4) {
-                //Draw Circle
-                Circle(g);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 5) {
-                //Draw Oval
-                Oval(g);
+            switch (Formulario.getComboBox1().getSelectedIndex()) {
+            //"Select an item"
+                case 0:
+                    break;
+                case 1:
+                    //Draw Line
+                    Line(g);
+                    break;
+                case 2:
+                    // Draw Square
+                    Square(g);
+                    break;
+                case 3:
+                    //Draw Rectangle
+                    Rectangle(g);
+                    break;
+                case 4:
+                    //Draw Circle
+                    Circle(g);
+                    break;
+                case 5:
+                    //Draw Oval
+                    Oval(g);
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -58,16 +67,24 @@ public class Lienzo extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
 
-            if (Formulario.getComboBox1().getSelectedIndex() == 1) {
-                LineReleased(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 2) {
-                SquareReleased(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 3) {
-                RectangleReleased(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 4) {
-                CircleReleased(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 5) {
-                OvalReleased(e);
+            switch (Formulario.getComboBox1().getSelectedIndex()) {
+                case 1:
+                    LineReleased(e);
+                    break;
+                case 2:
+                    SquareReleased(e);
+                    break;
+                case 3:
+                    RectangleReleased(e);
+                    break;
+                case 4:
+                    CircleReleased(e);
+                    break;
+                case 5:
+                    OvalReleased(e);
+                    break;
+                default:
+                    break;
             }
             repaint();
         }
@@ -75,16 +92,24 @@ public class Lienzo extends JPanel {
         @Override
         public void mousePressed(MouseEvent e) {
 
-            if (Formulario.getComboBox1().getSelectedIndex() == 1) {
-                LinePressed(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 2) {
-                SquarePressed(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 3) {
-                RectanglePressed(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 4) {
-                CirclePressed(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 5) {
-                OvalPressed(e);
+            switch (Formulario.getComboBox1().getSelectedIndex()) {
+                case 1:
+                    LinePressed(e);
+                    break;
+                case 2:
+                    SquarePressed(e);
+                    break;
+                case 3:
+                    RectanglePressed(e);
+                    break;
+                case 4:
+                    CirclePressed(e);
+                    break;
+                case 5:
+                    OvalPressed(e);
+                    break;
+                default:
+                    break;
             }
             repaint();
         }
@@ -94,16 +119,24 @@ public class Lienzo extends JPanel {
         @Override
         public void mouseDragged(MouseEvent e) {
 
-            if (Formulario.getComboBox1().getSelectedIndex() == 1) {
-                LineDragged(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 2) {
-                SquareDragged(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 3) {
-                RectangleDragged(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 4) {
-                CircleDragged(e);
-            } else if (Formulario.getComboBox1().getSelectedIndex() == 5) {
-                OvalDragged(e);
+            switch (Formulario.getComboBox1().getSelectedIndex()) {
+                case 1:
+                    LineDragged(e);
+                    break;
+                case 2:
+                    SquareDragged(e);
+                    break;
+                case 3:
+                    RectangleDragged(e);
+                    break;
+                case 4:
+                    CircleDragged(e);
+                    break;
+                case 5:
+                    OvalDragged(e);
+                    break;
+                default:
+                    break;
             }
             repaint();
         }
