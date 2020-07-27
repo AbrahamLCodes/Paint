@@ -8,21 +8,24 @@ import javax.swing.JPanel;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class Lienzo extends JPanel {
 
-    int x1, x2, y1, y2;
-    int ancho, alto;
+    private int x1, x2, y1, y2;
+    private int ancho, alto;
 
-    int[] rectanguloValoresX = new int[4];
-    int[] rectanguloValoresY = new int[4];
+    private int[] rectanguloValoresX = new int[4];
+    private int[] rectanguloValoresY = new int[4];
 
+    private Vector<Figura> vectorFiguras;
+    
     public Lienzo() {
         setBackground(Color.BLACK);
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseMotionHandler);
-
+        vectorFiguras = new Vector<>();
     }
 
     @Override
@@ -32,33 +35,9 @@ public class Lienzo extends JPanel {
         drawInit(g);
 
         if (Formulario.getComboBox1().getItemCount() == 6) {
-
-            switch (Formulario.getComboBox1().getSelectedIndex()) {
-            //"Select an item"
-                case 0:
-                    break;
-                case 1:
-                    //Draw Line
-                    Line(g);
-                    break;
-                case 2:
-                    // Draw Square
-                    Square(g);
-                    break;
-                case 3:
-                    //Draw Rectangle
-                    Rectangle(g);
-                    break;
-                case 4:
-                    //Draw Circle
-                    Circle(g);
-                    break;
-                case 5:
-                    //Draw Oval
-                    Oval(g);
-                    break;
-                default:
-                    break;
+            
+            for (Figura figuras : vectorFiguras) {
+                figuras.pintar(g, Formulario.getComboBox1().getSelectedIndex());
             }
         }
     }
@@ -153,16 +132,20 @@ public class Lienzo extends JPanel {
     private void LineDragged(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
+        vectorFiguras.set(vectorFiguras.size()-1, new Figura(x1, y1, x2, y2));
     }
 
     private void LineReleased(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
+        vectorFiguras.set(vectorFiguras.size()-1, new Figura(x1, y1, x2, y2));
+
     }
 
     private void Line(Graphics g) {
         g.setColor(Color.white);
-        g.drawLine(x1, y1, x2, y2);
+        //g.drawLine(x1, y1, x2, y2);
+        vectorFiguras.add(new Figura(x1, y1, x2, y2));
         float numero = (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         if (x1 > x2 && y1 > y2) {
             g.drawString("" + numero / 10 + "mts", x1 - Math.abs((x1 - x2) / 2), y1 - Math.abs((y1 - y2) / 2));
