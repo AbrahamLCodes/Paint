@@ -10,9 +10,11 @@ import javax.swing.JComboBox;
 
 public class Formulario extends javax.swing.JFrame {
 
+    private Lienzo lienzo;
+    
     public Formulario() {
         initComponents();
-        Lienzo lienzo = new Lienzo();
+        lienzo = new Lienzo();
         setSize(800, 600);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -29,6 +31,7 @@ public class Formulario extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         panelFondo = new javax.swing.JPanel();
         comboBox1 = new javax.swing.JComboBox<>();
+        undoButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -51,8 +54,16 @@ public class Formulario extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        comboBox1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        comboBox1.setFont(new java.awt.Font("Helvetica", 1, 18)); // NOI18N
         comboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select an Item", "Line", "Square", "Rectangle", "Circle", "Oval" }));
+
+        undoButton.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
+        undoButton.setText("Deshacer");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -62,7 +73,9 @@ public class Formulario extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(undoButton))
                 .addContainerGap(76, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,7 +87,9 @@ public class Formulario extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(478, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(undoButton)
+                .addContainerGap(425, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -131,6 +146,11 @@ public class Formulario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
+        
+       lienzo.undo();
+    }//GEN-LAST:event_undoButtonActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -178,5 +198,6 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel panelFondo;
+    private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables
 }

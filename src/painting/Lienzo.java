@@ -3,9 +3,7 @@ package painting;
 /*
 Autor: Abraham Luna Cázares
 Fecha: Julio 28 2020
-*/
-
-
+ */
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -15,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 
 public class Lienzo extends JPanel {
 
@@ -266,5 +265,15 @@ public class Lienzo extends JPanel {
 
     private int ultimoIndex() {
         return vectorFiguras.size() - 1;
+    }
+
+    public void undo() {
+        if (ultimoIndex() != -1) {
+            vectorId.remove(ultimoIndex());
+            vectorFiguras.remove(ultimoIndex());
+            repaint();
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay figuras para borrar");
+        }
     }
 }
