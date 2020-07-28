@@ -1,5 +1,11 @@
 package painting;
 
+/*
+Autor: Abraham Luna Cázares
+Fecha: Julio 28 2020
+*/
+
+
 import java.awt.Color;
 import java.awt.Graphics;
 

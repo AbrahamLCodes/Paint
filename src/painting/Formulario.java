@@ -1,5 +1,11 @@
 package painting;
 
+
+/*
+Autor: Abraham Luna Cázares
+Fecha: Julio 28 2020
+*/
+
 import javax.swing.JComboBox;
 
 public class Formulario extends javax.swing.JFrame {
