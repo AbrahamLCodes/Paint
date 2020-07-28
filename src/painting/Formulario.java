@@ -11,7 +11,7 @@ public class Formulario extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setTitle("Programa en macOS");
+        setTitle("Dibujo dinámico en Java");
         panelFondo.add(lienzo);
         lienzo.setBounds(0, 0, panelFondo.getWidth(), panelFondo.getHeight());
     }
