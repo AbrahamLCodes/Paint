@@ -4,14 +4,16 @@ package painting;
 /*
 Autor: Abraham Luna Cázares
 Fecha: Julio 28 2020
-*/
-
+ */
+import java.awt.Color;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 public class Formulario extends javax.swing.JFrame {
 
     private Lienzo lienzo;
-    
+    public static Color color;
+
     public Formulario() {
         initComponents();
         lienzo = new Lienzo();
@@ -22,6 +24,9 @@ public class Formulario extends javax.swing.JFrame {
         setTitle("Dibujo dinámico en Java");
         panelFondo.add(lienzo);
         lienzo.setBounds(0, 0, panelFondo.getWidth(), panelFondo.getHeight());
+
+        color = new Color(getIntFromColor(0, 221, 28));
+        backLabel.setBackground(color);
     }
 
     @SuppressWarnings("unchecked")
@@ -32,6 +37,11 @@ public class Formulario extends javax.swing.JFrame {
         panelFondo = new javax.swing.JPanel();
         comboBox1 = new javax.swing.JComboBox<>();
         undoButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        brochaLabel = new javax.swing.JLabel();
+        aumentarBtn = new javax.swing.JButton();
+        reducirBtn = new javax.swing.JButton();
+        backLabel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -54,8 +64,8 @@ public class Formulario extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        comboBox1.setFont(new java.awt.Font("Helvetica", 1, 18)); // NOI18N
-        comboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select an Item", "Line", "Square", "Rectangle", "Circle", "Oval" }));
+        comboBox1.setFont(new java.awt.Font("Helvetica", 1, 14)); // NOI18N
+        comboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecciona un Ítem", "Línea", "Cuadrado", "Rectángulo", "Círculo", "Óvalo", "Mano Alzada" }));
 
         undoButton.setFont(new java.awt.Font("Helvetica", 0, 18)); // NOI18N
         undoButton.setText("Deshacer");
@@ -64,6 +74,44 @@ public class Formulario extends javax.swing.JFrame {
                 undoButtonActionPerformed(evt);
             }
         });
+
+        jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton1.setText("Color");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        brochaLabel.setFont(new java.awt.Font("Ubuntu Condensed", 1, 18)); // NOI18N
+        brochaLabel.setText("30");
+
+        aumentarBtn.setText("Aumentar Brocha");
+        aumentarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aumentarBtnActionPerformed(evt);
+            }
+        });
+
+        reducirBtn.setText("Reducir Brocha");
+        reducirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reducirBtnActionPerformed(evt);
+            }
+        });
+
+        backLabel.setBackground(new java.awt.Color(204, 255, 102));
+
+        javax.swing.GroupLayout backLabelLayout = new javax.swing.GroupLayout(backLabel);
+        backLabel.setLayout(backLabelLayout);
+        backLabelLayout.setHorizontalGroup(
+            backLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        backLabelLayout.setVerticalGroup(
+            backLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,9 +122,22 @@ public class Formulario extends javax.swing.JFrame {
                 .addComponent(panelFondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(undoButton))
-                .addContainerGap(76, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(undoButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(brochaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(backLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(reducirBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(aumentarBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 70, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,7 +150,17 @@ public class Formulario extends javax.swing.JFrame {
                 .addComponent(comboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(undoButton)
-                .addContainerGap(425, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(backLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(brochaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(aumentarBtn)
+                .addGap(18, 18, 18)
+                .addComponent(reducirBtn)
+                .addContainerGap(218, Short.MAX_VALUE))
         );
 
         jMenu1.setText("File");
@@ -147,9 +218,49 @@ public class Formulario extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        
-       lienzo.undo();
+
+        lienzo.undo();
     }//GEN-LAST:event_undoButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ColoresActivity coloresActivity = new ColoresActivity();
+        coloresActivity.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void aumentarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aumentarBtnActionPerformed
+        if (Integer.parseInt(brochaLabel.getText()) < 50) {
+            brochaLabel.setText(String.valueOf(Integer.parseInt(brochaLabel.getText()) + 2));
+        }
+
+    }//GEN-LAST:event_aumentarBtnActionPerformed
+
+    private void reducirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reducirBtnActionPerformed
+        if (Integer.parseInt(brochaLabel.getText()) > 2) {
+            brochaLabel.setText(String.valueOf(Integer.parseInt(brochaLabel.getText()) - 2));
+        }
+    }//GEN-LAST:event_reducirBtnActionPerformed
+
+    public int getIntFromColor(int Red, int Green, int Blue) {
+        Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
+        Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
+        Blue = Blue & 0x000000FF; //Mask out anything not blue.
+
+        return 0xFF000000 | Red | Green | Blue; //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+    }
+
+    public static Color getColor() {
+        return color;
+    }
+
+    public static void setColor(Color colorsito) {
+        color = colorsito;
+        backLabel.setBackground(color);
+    }
+
+    public static JLabel getBrochaLabel() {
+        return brochaLabel;
+    }
+    
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -189,7 +300,11 @@ public class Formulario extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aumentarBtn;
+    private static javax.swing.JPanel backLabel;
+    private static javax.swing.JLabel brochaLabel;
     private static javax.swing.JComboBox<String> comboBox1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -198,6 +313,7 @@ public class Formulario extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel panelFondo;
+    private javax.swing.JButton reducirBtn;
     private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables
 }

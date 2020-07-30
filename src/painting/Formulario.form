@@ -94,10 +94,29 @@
                   <Component id="panelFondo" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="comboBox1" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="undoButton" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jButton1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="undoButton" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="brochaLabel" alignment="0" min="-2" pref="85" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="backLabel" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="comboBox1" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="reducirBtn" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="aumentarBtn" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <EmptySpace min="0" pref="70" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="76" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -113,7 +132,18 @@
                   <Component id="comboBox1" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="undoButton" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="425" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="backLabel" max="32767" attributes="0"/>
+                      <Component id="jButton1" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="brochaLabel" min="-2" pref="52" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="aumentarBtn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="reducirBtn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="218" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -142,16 +172,17 @@
         <Component class="javax.swing.JComboBox" name="comboBox1">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Helvetica" size="18" style="1"/>
+              <Font name="Helvetica" size="14" style="1"/>
             </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="6">
-                <StringItem index="0" value="Select an Item"/>
-                <StringItem index="1" value="Line"/>
-                <StringItem index="2" value="Square"/>
-                <StringItem index="3" value="Rectangle"/>
-                <StringItem index="4" value="Circle"/>
-                <StringItem index="5" value="Oval"/>
+              <StringArray count="7">
+                <StringItem index="0" value="Selecciona un &#xcd;tem"/>
+                <StringItem index="1" value="L&#xed;nea"/>
+                <StringItem index="2" value="Cuadrado"/>
+                <StringItem index="3" value="Rect&#xe1;ngulo"/>
+                <StringItem index="4" value="C&#xed;rculo"/>
+                <StringItem index="5" value="&#xd3;valo"/>
+                <StringItem index="6" value="Mano Alzada"/>
               </StringArray>
             </Property>
           </Properties>
@@ -171,6 +202,67 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="undoButtonActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="jButton1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Dialog" size="14" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Color"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="brochaLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Ubuntu Condensed" size="18" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="30"/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
+          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JButton" name="aumentarBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Aumentar Brocha"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aumentarBtnActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="reducirBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Reducir Brocha"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reducirBtnActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JPanel" name="backLabel">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="ff" red="cc" type="rgb"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
+          </AuxValues>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

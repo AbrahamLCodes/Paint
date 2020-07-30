@@ -6,6 +6,7 @@ Fecha: Julio 28 2020
  */
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
@@ -22,6 +23,12 @@ public class Lienzo extends JPanel {
 
     private Vector<Figura> vectorFiguras;
     private Vector<Integer> vectorId;
+    private Vector<Color> vectorColor;
+    private Vector<Integer> vectorStroke;
+
+    //Vectores para soporte de eliminacion de multiples Manos Alzadas
+    private Vector<Integer> alzadaIniciales;
+    private Vector<Integer> alzadaFinales;
 
     public Lienzo() {
         setBackground(Color.BLACK);
@@ -29,6 +36,11 @@ public class Lienzo extends JPanel {
         addMouseMotionListener(mouseMotionHandler);
         vectorFiguras = new Vector<>();
         vectorId = new Vector<>();
+        vectorColor = new Vector<>();
+        vectorStroke = new Vector<>();
+
+        alzadaIniciales = new Vector<>();
+        alzadaFinales = new Vector<>();
     }
 
     @Override
@@ -37,10 +49,11 @@ public class Lienzo extends JPanel {
 
         drawInit(g);
 
-        if (Formulario.getComboBox1().getItemCount() == 6) {
+        if (Formulario.getComboBox1().getItemCount() == 7) {
             int i = 0;
             for (Figura figuras : vectorFiguras) {
-                figuras.pintar(g, vectorId.get(i));
+                figuras.pintar((Graphics2D) g, vectorId.get(i), vectorColor.get(i),
+                        vectorStroke.get(i));
                 i++;
             }
         }
@@ -66,6 +79,9 @@ public class Lienzo extends JPanel {
                 case 5:
                     OvalReleased(e);
                     break;
+                case 6:
+                    free(e);
+                    alzadaFinales.add(ultimoIndex());
                 default:
                     break;
             }
@@ -74,10 +90,6 @@ public class Lienzo extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
-
-            if (Formulario.getComboBox1().getSelectedIndex() != 0) {
-                vectorId.add(Formulario.getComboBox1().getSelectedIndex());
-            }
 
             switch (Formulario.getComboBox1().getSelectedIndex()) {
                 case 1:
@@ -95,8 +107,20 @@ public class Lienzo extends JPanel {
                 case 5:
                     OvalPressed(e);
                     break;
+                case 6:
+                    //Subindice de la ultima figura 
+                    free(e);
+                    alzadaIniciales.add(ultimoIndex());
+                    break;
                 default:
                     break;
+            }
+            if (Formulario.getComboBox1().getSelectedIndex() != 0
+                    && Formulario.getComboBox1().getSelectedIndex() != 6) {
+
+                vectorId.add(Formulario.getComboBox1().getSelectedIndex());
+                vectorColor.add(Formulario.getColor());
+                vectorStroke.add(Integer.parseInt(Formulario.getBrochaLabel().getText()));
             }
             repaint();
         }
@@ -122,6 +146,9 @@ public class Lienzo extends JPanel {
                 case 5:
                     OvalDragged(e);
                     break;
+                case 6:
+                    free(e);
+                    break;
                 default:
                     break;
             }
@@ -129,6 +156,56 @@ public class Lienzo extends JPanel {
         }
 
     };
+
+    public void undo() {
+        if (ultimoIndex() != -1) {
+            if (vectorId.get(ultimoIndex()) == 6) {
+                undoFree();
+            } else {
+                vectorId.remove(ultimoIndex());
+                vectorColor.remove(ultimoIndex());
+                vectorStroke.remove(ultimoIndex());
+                vectorFiguras.remove(ultimoIndex());
+                repaint();
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No hay figuras para borrar");
+        }
+    }
+
+    private void undoFree() {
+        int i;
+        int j = alzadaIniciales.get(alzadaFinales.size() - 1);
+
+        for (i = alzadaFinales.get(alzadaFinales.size() - 1); i >= j; i--) {
+            vectorId.remove(i);
+            vectorColor.remove(i);
+            vectorStroke.remove(i);
+            vectorFiguras.remove(i);
+        }
+
+        if (alzadaFinales.size() > 0 && alzadaIniciales.size() > 0) {
+            alzadaFinales.remove(alzadaFinales.size() - 1);
+            alzadaIniciales.remove(alzadaIniciales.size() - 1);
+        }
+
+        repaint();
+    }
+
+    private void free(MouseEvent e) {
+        x1 = e.getX();
+        y1 = e.getY();
+
+        vectorId.add(Formulario.getComboBox1().getSelectedIndex());
+        vectorColor.add(Formulario.getColor());
+        vectorStroke.add(Integer.parseInt(Formulario.getBrochaLabel().getText()));
+        vectorFiguras.add(new Figura(x1, y1));
+    }
+
+    private int ultimoIndex() {
+        return vectorFiguras.size() - 1;
+    }
 
     private void LinePressed(MouseEvent e) {
         x1 = e.getX();
@@ -260,20 +337,6 @@ public class Lienzo extends JPanel {
         for (int i = 0; i < this.getWidth(); i += 10) {
             g.setColor(Color.DARK_GRAY);
             g.drawLine(i, 0, i, this.getHeight());
-        }
-    }
-
-    private int ultimoIndex() {
-        return vectorFiguras.size() - 1;
-    }
-
-    public void undo() {
-        if (ultimoIndex() != -1) {
-            vectorId.remove(ultimoIndex());
-            vectorFiguras.remove(ultimoIndex());
-            repaint();
-        }else{
-            JOptionPane.showMessageDialog(null, "No hay figuras para borrar");
         }
     }
 }
