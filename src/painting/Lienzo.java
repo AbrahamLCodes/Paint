@@ -4,6 +4,7 @@ package painting;
 Autor: Abraham Luna Cázares
 Fecha: Julio 28 2020
  */
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,37 +18,32 @@ import java.util.ArrayList;
 import java.util.Stack;
 import javax.swing.JOptionPane;
 
-public class Lienzo extends JPanel {
+public class Lienzo extends Canvas {
 
     private int x1, x2, y1, y2;
     private int ancho, alto;
-
-    private ArrayList<Figura> vectorFiguras;
-    private ArrayList<Integer> vectorId;
-    private ArrayList<Color> vectorColor;
-    private ArrayList<Integer> vectorStroke;
 
     //Vectores para soporte de eliminacion de multiples Manos Alzadas
     private ArrayList<Integer> alzadaIniciales;
     private ArrayList<Integer> alzadaFinales;
 
-    private Stack<Figura> pila;
-    // Stack<String> stackOfCards = new Stack<>();
-
+    private Stack<Figura> pilaFiguras;
+    private Stack<Integer> pilaId;
+    private Stack<Color> pilaColor;
+    private Stack<Integer> pilaStroke;
 
     public Lienzo() {
         setBackground(Color.BLACK);
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseMotionHandler);
-        vectorFiguras = new ArrayList<>();
-        vectorId = new ArrayList<>();
-        vectorColor = new ArrayList<>();
-        vectorStroke = new ArrayList<>();
+
+        pilaFiguras = new Stack<>();
+        pilaId = new Stack<>();
+        pilaColor = new Stack<>();
+        pilaStroke = new Stack<>();
 
         alzadaIniciales = new ArrayList<>();
         alzadaFinales = new ArrayList<>();
-
-        pila = new Stack<>();
     }
 
     @Override
@@ -58,9 +54,9 @@ public class Lienzo extends JPanel {
 
         if (Formulario.getComboBox1().getItemCount() == 7) {
             int i = 0;
-            for (Figura figuras : vectorFiguras) {
-                figuras.pintar((Graphics2D) g, vectorId.get(i), vectorColor.get(i),
-                        vectorStroke.get(i));
+            for (Figura figuras : pilaFiguras) {
+                figuras.pintar((Graphics2D) g, pilaId.get(i), pilaColor.get(i),
+                        pilaStroke.get(i));
                 i++;
             }
         }
@@ -88,7 +84,7 @@ public class Lienzo extends JPanel {
                     break;
                 case 6:
                     free(e);
-                    alzadaFinales.add(ultimoIndex());
+                    alzadaFinales.add(pilaFiguras.size());
                 default:
                     break;
             }
@@ -117,7 +113,7 @@ public class Lienzo extends JPanel {
                 case 6:
                     //Subindice de la ultima figura 
                     free(e);
-                    alzadaIniciales.add(ultimoIndex());
+                    alzadaIniciales.add(pilaFiguras.size());
                     break;
                 default:
                     break;
@@ -125,9 +121,9 @@ public class Lienzo extends JPanel {
             if (Formulario.getComboBox1().getSelectedIndex() != 0
                     && Formulario.getComboBox1().getSelectedIndex() != 6) {
 
-                vectorId.add(Formulario.getComboBox1().getSelectedIndex());
-                vectorColor.add(Formulario.getColor());
-                vectorStroke.add(Integer.parseInt(Formulario.getBrochaLabel().getText()));
+                pilaId.push(Formulario.getComboBox1().getSelectedIndex());
+                pilaColor.push(Formulario.getColor());
+                pilaStroke.push(Integer.parseInt(Formulario.getBrochaLabel().getText()));
             }
             repaint();
         }
@@ -165,14 +161,15 @@ public class Lienzo extends JPanel {
     };
 
     public void undo() {
-        if (ultimoIndex() != -1) {
-            if (vectorId.get(ultimoIndex()) == 6) {
+        if (!pilaFiguras.isEmpty()) {
+
+            if (pilaId.peek() == 6) {
                 undoFree();
             } else {
-                vectorId.remove(ultimoIndex());
-                vectorColor.remove(ultimoIndex());
-                vectorStroke.remove(ultimoIndex());
-                vectorFiguras.remove(ultimoIndex());
+                pilaId.pop();
+                pilaColor.pop();
+                pilaStroke.pop();
+                pilaFiguras.pop();
                 repaint();
             }
 
@@ -182,14 +179,14 @@ public class Lienzo extends JPanel {
     }
 
     private void undoFree() {
-        int i;
-        int j = alzadaIniciales.get(alzadaFinales.size() - 1);
+        int j = alzadaIniciales.get(alzadaIniciales.size() - 1);
 
-        for (i = alzadaFinales.get(alzadaFinales.size() - 1); i >= j; i--) {
-            vectorId.remove(i);
-            vectorColor.remove(i);
-            vectorStroke.remove(i);
-            vectorFiguras.remove(i);
+        for (int i = alzadaFinales.get(alzadaFinales.size() - 1); i >= j; i--) {
+
+            pilaId.pop();
+            pilaColor.pop();
+            pilaStroke.pop();
+            pilaFiguras.pop();
         }
 
         if (alzadaFinales.size() > 0 && alzadaIniciales.size() > 0) {
@@ -204,14 +201,14 @@ public class Lienzo extends JPanel {
         x1 = e.getX();
         y1 = e.getY();
 
-        vectorId.add(Formulario.getComboBox1().getSelectedIndex());
-        vectorColor.add(Formulario.getColor());
-        vectorStroke.add(Integer.parseInt(Formulario.getBrochaLabel().getText()));
-        vectorFiguras.add(new Figura(x1, y1));
+        pilaId.push(Formulario.getComboBox1().getSelectedIndex());
+        pilaColor.push(Formulario.getColor());
+        pilaStroke.push(Integer.parseInt(Formulario.getBrochaLabel().getText()));
+        pilaFiguras.push(new Figura(x1, y1));
     }
 
-    private int ultimoIndex() {
-        return vectorFiguras.size() - 1;
+    private Figura ultimoIndex() {
+        return pilaFiguras.peek();
     }
 
     private void linePressed(MouseEvent e) {
@@ -221,14 +218,14 @@ public class Lienzo extends JPanel {
         x2 = x1;
         y2 = y1;
 
-        vectorFiguras.add(new Figura(x1, y1, x2, y2));
+        pilaFiguras.push(new Figura(x1, y1, x2, y2));
     }
 
     private void lineMoved(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
 
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, x2, y2));
+        actualizar(x2, y2);
     }
 
     private void squarePressed(MouseEvent e) {
@@ -238,14 +235,14 @@ public class Lienzo extends JPanel {
         ancho = 0;
         alto = ancho;
 
-        vectorFiguras.add(new Figura(x1, y1, ancho, alto));
+        pilaFiguras.push(new Figura(x1, y1, ancho, alto));
+
     }
 
     private void squareMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = ancho;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
+        actualizar(ancho, alto);
     }
 
     private void rectanglePressed(MouseEvent e) {
@@ -256,14 +253,13 @@ public class Lienzo extends JPanel {
         ancho = 0;
         alto = ancho;
 
-        vectorFiguras.add(new Figura(x1, y1, ancho, alto));
+        pilaFiguras.push(new Figura(x1, y1, ancho, alto));
     }
 
     private void rectangleMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = e.getY() - y1;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
+        actualizar(ancho, alto);
     }
 
     private void circlePressed(MouseEvent e) {
@@ -273,14 +269,13 @@ public class Lienzo extends JPanel {
         ancho = 0;
         alto = ancho;
 
-        vectorFiguras.add(new Figura(x1, y1, ancho, alto));
+        pilaFiguras.push(new Figura(x1, y1, ancho, alto));
     }
 
     private void circleMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = ancho;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
+        actualizar(ancho, alto);
     }
 
     private void ovalPressed(MouseEvent e) {
@@ -290,14 +285,19 @@ public class Lienzo extends JPanel {
         ancho = 0;
         alto = ancho;
 
-        vectorFiguras.add(new Figura(x1, y1, ancho, alto));
+        pilaFiguras.push(new Figura(x1, y1, ancho, alto));
+
     }
 
     private void ovalMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = e.getY() - y1;
+        actualizar(ancho, alto);
+    }
 
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
+    private void actualizar(int ancho, int alto) {
+        ultimoIndex().setX2(ancho);
+        ultimoIndex().setY2(alto);
     }
 
     private void drawInit(Graphics g) {
