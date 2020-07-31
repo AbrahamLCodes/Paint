@@ -13,7 +13,8 @@ import javax.swing.JPanel;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Stack;
 import javax.swing.JOptionPane;
 
 public class Lienzo extends JPanel {
@@ -21,26 +22,32 @@ public class Lienzo extends JPanel {
     private int x1, x2, y1, y2;
     private int ancho, alto;
 
-    private Vector<Figura> vectorFiguras;
-    private Vector<Integer> vectorId;
-    private Vector<Color> vectorColor;
-    private Vector<Integer> vectorStroke;
+    private ArrayList<Figura> vectorFiguras;
+    private ArrayList<Integer> vectorId;
+    private ArrayList<Color> vectorColor;
+    private ArrayList<Integer> vectorStroke;
 
     //Vectores para soporte de eliminacion de multiples Manos Alzadas
-    private Vector<Integer> alzadaIniciales;
-    private Vector<Integer> alzadaFinales;
+    private ArrayList<Integer> alzadaIniciales;
+    private ArrayList<Integer> alzadaFinales;
+
+    private Stack<Figura> pila;
+    // Stack<String> stackOfCards = new Stack<>();
+
 
     public Lienzo() {
         setBackground(Color.BLACK);
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseMotionHandler);
-        vectorFiguras = new Vector<>();
-        vectorId = new Vector<>();
-        vectorColor = new Vector<>();
-        vectorStroke = new Vector<>();
+        vectorFiguras = new ArrayList<>();
+        vectorId = new ArrayList<>();
+        vectorColor = new ArrayList<>();
+        vectorStroke = new ArrayList<>();
 
-        alzadaIniciales = new Vector<>();
-        alzadaFinales = new Vector<>();
+        alzadaIniciales = new ArrayList<>();
+        alzadaFinales = new ArrayList<>();
+
+        pila = new Stack<>();
     }
 
     @Override
@@ -65,19 +72,19 @@ public class Lienzo extends JPanel {
 
             switch (Formulario.getComboBox1().getSelectedIndex()) {
                 case 1:
-                    LineReleased(e);
+                    lineMoved(e);
                     break;
                 case 2:
-                    SquareReleased(e);
+                    squareMoved(e);
                     break;
                 case 3:
-                    RectangleReleased(e);
+                    rectangleMoved(e);
                     break;
                 case 4:
-                    CircleReleased(e);
+                    circleMoved(e);
                     break;
                 case 5:
-                    OvalReleased(e);
+                    ovalMoved(e);
                     break;
                 case 6:
                     free(e);
@@ -93,19 +100,19 @@ public class Lienzo extends JPanel {
 
             switch (Formulario.getComboBox1().getSelectedIndex()) {
                 case 1:
-                    LinePressed(e);
+                    linePressed(e);
                     break;
                 case 2:
-                    SquarePressed(e);
+                    squarePressed(e);
                     break;
                 case 3:
-                    RectanglePressed(e);
+                    rectanglePressed(e);
                     break;
                 case 4:
-                    CirclePressed(e);
+                    circlePressed(e);
                     break;
                 case 5:
-                    OvalPressed(e);
+                    ovalPressed(e);
                     break;
                 case 6:
                     //Subindice de la ultima figura 
@@ -132,19 +139,19 @@ public class Lienzo extends JPanel {
 
             switch (Formulario.getComboBox1().getSelectedIndex()) {
                 case 1:
-                    LineDragged(e);
+                    lineMoved(e);
                     break;
                 case 2:
-                    SquareDragged(e);
+                    squareMoved(e);
                     break;
                 case 3:
-                    RectangleDragged(e);
+                    rectangleMoved(e);
                     break;
                 case 4:
-                    CircleDragged(e);
+                    circleMoved(e);
                     break;
                 case 5:
-                    OvalDragged(e);
+                    ovalMoved(e);
                     break;
                 case 6:
                     free(e);
@@ -207,7 +214,7 @@ public class Lienzo extends JPanel {
         return vectorFiguras.size() - 1;
     }
 
-    private void LinePressed(MouseEvent e) {
+    private void linePressed(MouseEvent e) {
         x1 = e.getX();
         y1 = e.getY();
 
@@ -217,20 +224,14 @@ public class Lienzo extends JPanel {
         vectorFiguras.add(new Figura(x1, y1, x2, y2));
     }
 
-    private void LineDragged(MouseEvent e) {
-        x2 = e.getX();
-        y2 = e.getY();
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, x2, y2));
-    }
-
-    private void LineReleased(MouseEvent e) {
+    private void lineMoved(MouseEvent e) {
         x2 = e.getX();
         y2 = e.getY();
 
         vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, x2, y2));
     }
 
-    private void SquarePressed(MouseEvent e) {
+    private void squarePressed(MouseEvent e) {
         x1 = e.getX();
         y1 = e.getY();
 
@@ -240,21 +241,14 @@ public class Lienzo extends JPanel {
         vectorFiguras.add(new Figura(x1, y1, ancho, alto));
     }
 
-    private void SquareDragged(MouseEvent e) {
+    private void squareMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = ancho;
 
         vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
     }
 
-    private void SquareReleased(MouseEvent e) {
-        ancho = e.getX() - x1;
-        alto = ancho;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
-    }
-
-    private void RectanglePressed(MouseEvent e) {
+    private void rectanglePressed(MouseEvent e) {
 
         x1 = e.getX();
         y1 = e.getY();
@@ -265,21 +259,14 @@ public class Lienzo extends JPanel {
         vectorFiguras.add(new Figura(x1, y1, ancho, alto));
     }
 
-    private void RectangleDragged(MouseEvent e) {
+    private void rectangleMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = e.getY() - y1;
 
         vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
     }
 
-    private void RectangleReleased(MouseEvent e) {
-        ancho = e.getX() - x1;
-        alto = e.getY() - y1;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
-    }
-
-    private void CirclePressed(MouseEvent e) {
+    private void circlePressed(MouseEvent e) {
         x1 = e.getX();
         y1 = e.getY();
 
@@ -289,21 +276,14 @@ public class Lienzo extends JPanel {
         vectorFiguras.add(new Figura(x1, y1, ancho, alto));
     }
 
-    private void CircleDragged(MouseEvent e) {
+    private void circleMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = ancho;
 
         vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
     }
 
-    private void CircleReleased(MouseEvent e) {
-        ancho = e.getX() - x1;
-        alto = ancho;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
-    }
-
-    private void OvalPressed(MouseEvent e) {
+    private void ovalPressed(MouseEvent e) {
         x1 = e.getX();
         y1 = e.getY();
 
@@ -313,14 +293,7 @@ public class Lienzo extends JPanel {
         vectorFiguras.add(new Figura(x1, y1, ancho, alto));
     }
 
-    private void OvalDragged(MouseEvent e) {
-        ancho = e.getX() - x1;
-        alto = e.getY() - y1;
-
-        vectorFiguras.set(ultimoIndex(), new Figura(x1, y1, ancho, alto));
-    }
-
-    private void OvalReleased(MouseEvent e) {
+    private void ovalMoved(MouseEvent e) {
         ancho = e.getX() - x1;
         alto = e.getY() - y1;
 
