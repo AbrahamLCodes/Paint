@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JPanel;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
@@ -27,12 +26,14 @@ public class Lienzo extends Canvas {
     private ArrayList<Integer> alzadaIniciales;
     private ArrayList<Integer> alzadaFinales;
 
+    //Pilas para llevar un registro de figuras, IDs, colores y la brocha
     private Stack<Figura> pilaFiguras;
     private Stack<Integer> pilaId;
     private Stack<Color> pilaColor;
     private Stack<Integer> pilaStroke;
 
     public Lienzo() {
+        //Constructor básico de la clase
         setBackground(Color.BLACK);
         addMouseListener(mouseHandler);
         addMouseMotionListener(mouseMotionHandler);
@@ -49,11 +50,15 @@ public class Lienzo extends Canvas {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
+        
+        //Método para pintar cuadriculado el Lienzo (No es necesario)
         drawInit(g);
-
+        
+        //Condicional para verificar que el ComboBox ya esté construido
         if (Formulario.getComboBox1().getItemCount() == 7) {
             int i = 0;
+            //Cuando se pinte (O repinte) se dibujarán todas las figuras con su
+            // id, color y tamaño de brocha registrados en las pilas
             for (Figura figuras : pilaFiguras) {
                 figuras.pintar((Graphics2D) g, pilaId.get(i), pilaColor.get(i),
                         pilaStroke.get(i));
@@ -118,6 +123,9 @@ public class Lienzo extends Canvas {
                 default:
                     break;
             }
+            //Aquí registramos nuestros valores en las pilas. Ojo, cuando es
+            // mano alzada es diferente el método puesto que muchos círculos representan
+            // una sola figura. Checar el método Free
             if (Formulario.getComboBox1().getSelectedIndex() != 0
                     && Formulario.getComboBox1().getSelectedIndex() != 6) {
 
@@ -162,7 +170,8 @@ public class Lienzo extends Canvas {
 
     public void undo() {
         if (!pilaFiguras.isEmpty()) {
-
+            //Checar que la figura que se va a eliminar no sea mano alzada. Si lo es
+            // la función undo tendrá un comportamiento diferente
             if (pilaId.peek() == 6) {
                 undoFree();
             } else {
@@ -179,16 +188,21 @@ public class Lienzo extends Canvas {
     }
 
     private void undoFree() {
+        
+        /*
+            La eliminación de una figura mano alzada se maneja con intervalos.
+            Los intervalos están alojados en los 2 ArrayList declarados
+        */
         int j = alzadaIniciales.get(alzadaIniciales.size() - 1);
 
         for (int i = alzadaFinales.get(alzadaFinales.size() - 1); i >= j; i--) {
-
+            //Con un ciclo for eliminamos según los intervalos manejados
             pilaId.pop();
             pilaColor.pop();
             pilaStroke.pop();
             pilaFiguras.pop();
         }
-
+        
         if (alzadaFinales.size() > 0 && alzadaIniciales.size() > 0) {
             alzadaFinales.remove(alzadaFinales.size() - 1);
             alzadaIniciales.remove(alzadaIniciales.size() - 1);

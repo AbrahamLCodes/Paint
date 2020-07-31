@@ -6,7 +6,6 @@ Autor: Abraham Luna Cázares
 Fecha: Julio 28 2020
  */
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
@@ -16,6 +15,7 @@ public class Formulario extends javax.swing.JFrame {
     public static Color color;
 
     public Formulario() {
+        //Configuraciones básicas de la interfaz. Nada importante para el proyecto
         initComponents();
         lienzo = new Lienzo();
         setSize(800, 600);
@@ -239,6 +239,8 @@ public class Formulario extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public int getIntFromColor(int Red, int Green, int Blue) {
+        //Configuraciones para obtener un color basado en el RGB seleccionado
+        
         Red = (Red << 16) & 0x00FF0000; //Shift red 16-bits and mask out other stuff
         Green = (Green << 8) & 0x0000FF00; //Shift Green 8-bits and mask out other stuff
         Blue = Blue & 0x000000FF; //Mask out anything not blue.
